@@ -21,7 +21,7 @@ spec:
       annotations:
         opendatahub.io/notebook-python-dependencies: '[]'
         opendatahub.io/notebook-software: '[]'
-        openshift.io/imported-from: 'quay.io/hvan/custom_notebook:latest'
+        openshift.io/imported-from: 'quay.io/hvan/custom-notebook:latest'
       from:
         kind: DockerImage
         name: 'quay.io/hvan/custom_notebook:latest'
