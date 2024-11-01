@@ -79,6 +79,21 @@ spec:
               readOnly: true
               subPath: ca-bundle.crt
           workingDir: /opt/app-root/src
+        - args:
+          - --provider=openshift
+          - --https-address=:8443
+          - --http-address=
+          - --openshift-service-account=custom-workbench
+          - --cookie-secret-file=/etc/oauth/config/cookie_secret
+          - --cookie-expire=24h0m0s
+          - --tls-cert=/etc/tls/private/tls.crt
+          - --tls-key=/etc/tls/private/tls.key
+          - --upstream=http://localhost:8888
+          - --upstream-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+          - --email-domain=*
+          - --skip-provider-button
+          - --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"custom-workbench","namespace":"$(NAMESPACE)"}
+          - --logout-url=https://rhods-dashboard-redhat-ods-applications.apps.cluster-lz7m7.lz7m7.sandbox1105.opentlc.com/projects/parasol-insurance?notebookLogout=my-custom-workbench
       enableServiceLinks: false
       serviceAccountName: custom-workbench
       volumes:
