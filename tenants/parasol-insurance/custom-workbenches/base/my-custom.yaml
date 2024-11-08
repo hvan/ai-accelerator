@@ -1,0 +1,370 @@
+apiVersion: v1
+items:
+- apiVersion: kubeflow.org/v1
+  kind: Notebook
+  metadata:
+    annotations:
+      argocd.argoproj.io/tracking-id: parasol-insurance-custom-workbenches:kubeflow.org/Notebook:parasol-insurance/custom-workbench
+      kubectl.kubernetes.io/last-applied-configuration: |
+        {"apiVersion":"kubeflow.org/v1","kind":"Notebook","metadata":{"annotations":{"argocd.argoproj.io/tracking-id":"parasol-insurance-custom-workbenches:kubeflow.org/Notebook:parasol-insurance/custom-workbench","notebooks.opendatahub.io/inject-oauth":"true","notebooks.opendatahub.io/last-image-selection":"custom-notebook:latest","notebooks.opendatahub.io/oauth-logout-url":"","opendatahub.io/accelerator-name":"","opendatahub.io/image-display-name":"Minimal Python","openshift.io/description":"","openshift.io/display-name":"custom-workbench"},"name":"custom-workbench","namespace":"parasol-insurance"},"spec":{"template":{"spec":{"affinity":{},"containers":[{"env":[{"name":"NOTEBOOK_ARGS","value":"--ServerApp.port=8888\n--ServerApp.token=''\n--ServerApp.password=''\n--ServerApp.base_url=/notebook/parasol-insurance/custom-workbench\n--ServerApp.quit_button=False\n--ServerApp.tornado_settings={\"user\":\"user1\",\"hub_host\":\"\",\"hub_prefix\":\"/projects/parasol-insurance\"}"},{"name":"JUPYTER_IMAGE","value":"image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/custom-notebook:latest"},{"name":"PIP_CERT","value":"/etc/pki/tls/custom-certs/ca-bundle.crt"},{"name":"REQUESTS_CA_BUNDLE","value":"/etc/pki/tls/custom-certs/ca-bundle.crt"},{"name":"SSL_CERT_FILE","value":"/etc/pki/tls/custom-certs/ca-bundle.crt"},{"name":"PIPELINES_SSL_SA_CERTS","value":"/etc/pki/tls/custom-certs/ca-bundle.crt"}],"image":"image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/custom-notebook:latest","imagePullPolicy":"Always","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/notebook/parasol-insurance/custom-workbench/api","port":"notebook-port","scheme":"HTTP"},"initialDelaySeconds":10,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":1},"name":"custom-workbench","ports":[{"containerPort":8888,"name":"notebook-port","protocol":"TCP"}],"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/notebook/parasol-insurance/custom-workbench/api","port":"notebook-port","scheme":"HTTP"},"initialDelaySeconds":10,"periodSeconds":5,"successThreshold":1,"timeoutSeconds":1},"resources":{"limits":{"cpu":"2","memory":"8Gi"},"requests":{"cpu":"1","memory":"8Gi"}},"volumeMounts":[{"mountPath":"/opt/app-root/src","name":"custom-workbench"},{"mountPath":"/dev/shm","name":"shm"},{"mountPath":"/etc/pki/tls/custom-certs/ca-bundle.crt","name":"trusted-ca","readOnly":true,"subPath":"ca-bundle.crt"}],"workingDir":"/opt/app-root/src"}],"enableServiceLinks":false,"serviceAccountName":"custom-workbench","volumes":[{"name":"custom-workbench","persistentVolumeClaim":{"claimName":"custom-workbench"}},{"emptyDir":{"medium":"Memory"},"name":"shm"},{"configMap":{"items":[{"key":"ca-bundle.crt","path":"ca-bundle.crt"}],"name":"workbench-trusted-ca-bundle","optional":true},"name":"trusted-ca"}]}}}}
+      notebooks.kubeflow.org/last-activity: "2024-11-01T18:24:05Z"
+      notebooks.kubeflow.org/last_activity_check_timestamp: "2024-11-01T18:25:06Z"
+      notebooks.opendatahub.io/inject-oauth: "true"
+      notebooks.opendatahub.io/last-image-selection: custom-notebook:latest
+      notebooks.opendatahub.io/oauth-logout-url: ""
+      opendatahub.io/accelerator-name: ""
+      opendatahub.io/image-display-name: Minimal Python
+      openshift.io/description: ""
+      openshift.io/display-name: custom-workbench
+    creationTimestamp: "2024-11-01T18:01:15Z"
+    generation: 408
+    name: custom-workbench
+    namespace: parasol-insurance
+  spec:
+    template:
+      spec:
+        affinity: {}
+        containers:
+        - env:
+          - name: NOTEBOOK_ARGS
+            value: |-
+              --ServerApp.port=8888
+              --ServerApp.token=''
+              --ServerApp.password=''
+              --ServerApp.base_url=/notebook/parasol-insurance/custom-workbench
+              --ServerApp.quit_button=False
+              --ServerApp.tornado_settings={"user":"user1","hub_host":"","hub_prefix":"/projects/parasol-insurance"}
+          - name: JUPYTER_IMAGE
+            value: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/custom-notebook:latest
+          image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/custom-notebook:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /notebook/parasol-insurance/custom-workbench/api
+              port: notebook-port
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: custom-workbench
+          ports:
+          - containerPort: 8888
+            name: notebook-port
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /notebook/parasol-insurance/custom-workbench/api
+              port: notebook-port
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: "2"
+              memory: 8Gi
+            requests:
+              cpu: "1"
+              memory: 8Gi
+          volumeMounts:
+          - mountPath: /opt/app-root/src
+            name: custom-workbench
+          - mountPath: /dev/shm
+            name: shm
+          workingDir: /opt/app-root/src
+        - args:
+          - --provider=openshift
+          - --https-address=:8443
+          - --http-address=
+          - --openshift-service-account=custom-workbench
+          - --cookie-secret-file=/etc/oauth/config/cookie_secret
+          - --cookie-expire=24h0m0s
+          - --tls-cert=/etc/tls/private/tls.crt
+          - --tls-key=/etc/tls/private/tls.key
+          - --upstream=http://localhost:8888
+          - --upstream-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+          - --email-domain=*
+          - --skip-provider-button
+          - --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"custom-workbench","namespace":"$(NAMESPACE)"}
+          env:
+          - name: NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          image: registry.redhat.io/openshift4/ose-oauth-proxy@sha256:4bef31eb993feb6f1096b51b4876c65a6fb1f4401fee97fa4f4542b6b7c9bc46
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /oauth/healthz
+              port: oauth-proxy
+              scheme: HTTPS
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: oauth-proxy
+          ports:
+          - containerPort: 8443
+            name: oauth-proxy
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /oauth/healthz
+              port: oauth-proxy
+              scheme: HTTPS
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 100m
+              memory: 64Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
+          volumeMounts:
+          - mountPath: /etc/oauth/config
+            name: oauth-config
+          - mountPath: /etc/tls/private
+            name: tls-certificates
+        enableServiceLinks: false
+        serviceAccountName: custom-workbench
+        volumes:
+        - name: custom-workbench
+          persistentVolumeClaim:
+            claimName: custom-workbench
+        - emptyDir:
+            medium: Memory
+          name: shm
+        - name: oauth-config
+          secret:
+            defaultMode: 420
+            secretName: custom-workbench-oauth-config
+        - name: tls-certificates
+          secret:
+            defaultMode: 420
+            secretName: custom-workbench-tls
+  status:
+    conditions:
+    - lastProbeTime: "2024-11-01T18:25:33Z"
+      lastTransitionTime: "2024-11-01T18:25:33Z"
+      status: "False"
+      type: PodReadyToStartContainers
+    - lastProbeTime: "2024-11-01T18:25:33Z"
+      lastTransitionTime: "2024-11-01T18:25:33Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: "2024-11-01T18:25:33Z"
+      lastTransitionTime: "2024-11-01T18:25:33Z"
+      message: 'containers with unready status: [custom-workbench oauth-proxy]'
+      reason: ContainersNotReady
+      status: "False"
+      type: Ready
+    - lastProbeTime: "2024-11-01T18:25:33Z"
+      lastTransitionTime: "2024-11-01T18:25:33Z"
+      message: 'containers with unready status: [custom-workbench oauth-proxy]'
+      reason: ContainersNotReady
+      status: "False"
+      type: ContainersReady
+    - lastProbeTime: "2024-11-01T18:25:33Z"
+      lastTransitionTime: "2024-11-01T18:25:33Z"
+      status: "True"
+      type: PodScheduled
+    containerState:
+      waiting:
+        reason: ContainerCreating
+    readyReplicas: 0
+- apiVersion: kubeflow.org/v1
+  kind: Notebook
+  metadata:
+    annotations:
+      notebooks.kubeflow.org/last-activity: "2024-11-01T18:23:46Z"
+      notebooks.kubeflow.org/last_activity_check_timestamp: "2024-11-01T18:24:46Z"
+      notebooks.opendatahub.io/inject-oauth: "true"
+      notebooks.opendatahub.io/last-image-selection: custom-notebook:latest
+      notebooks.opendatahub.io/last-size-selection: Small
+      notebooks.opendatahub.io/oauth-logout-url: https://rhods-dashboard-redhat-ods-applications.apps.cluster-lz7m7.lz7m7.sandbox1105.opentlc.com/projects/parasol-insurance?notebookLogout=my-custom-workbench
+      opendatahub.io/accelerator-name: ""
+      opendatahub.io/image-display-name: Custom Notebook
+      opendatahub.io/username: admin
+      openshift.io/description: ""
+      openshift.io/display-name: my-custom-workbench
+    creationTimestamp: "2024-11-01T18:23:42Z"
+    generation: 1
+    labels:
+      app: my-custom-workbench
+      opendatahub.io/dashboard: "true"
+      opendatahub.io/odh-managed: "true"
+      opendatahub.io/user: admin
+    name: my-custom-workbench
+    namespace: parasol-insurance
+    resourceVersion: "286044"
+    uid: 0eb724c7-f2bd-4731-b01d-5079d2ba8506
+  spec:
+    template:
+      spec:
+        affinity: {}
+        containers:
+        - env:
+          - name: NOTEBOOK_ARGS
+            value: |-
+              --ServerApp.port=8888
+                                --ServerApp.token=''
+                                --ServerApp.password=''
+                                --ServerApp.base_url=/notebook/parasol-insurance/my-custom-workbench
+                                --ServerApp.quit_button=False
+                                --ServerApp.tornado_settings={"user":"admin","hub_host":"https://rhods-dashboard-redhat-ods-applications.apps.cluster-lz7m7.lz7m7.sandbox1105.opentlc.com","hub_prefix":"/projects/parasol-insurance"}
+          - name: JUPYTER_IMAGE
+            value: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/custom-notebook:latest
+          image: image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/custom-notebook:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /notebook/parasol-insurance/my-custom-workbench/api
+              port: notebook-port
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: my-custom-workbench
+          ports:
+          - containerPort: 8888
+            name: notebook-port
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /notebook/parasol-insurance/my-custom-workbench/api
+              port: notebook-port
+              scheme: HTTP
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: "2"
+              memory: 8Gi
+            requests:
+              cpu: "1"
+              memory: 8Gi
+          volumeMounts:
+          - mountPath: /opt/app-root/src
+            name: my-custom-workbench
+          - mountPath: /dev/shm
+            name: shm
+          workingDir: /opt/app-root/src
+        - args:
+          - --provider=openshift
+          - --https-address=:8443
+          - --http-address=
+          - --openshift-service-account=my-custom-workbench
+          - --cookie-secret-file=/etc/oauth/config/cookie_secret
+          - --cookie-expire=24h0m0s
+          - --tls-cert=/etc/tls/private/tls.crt
+          - --tls-key=/etc/tls/private/tls.key
+          - --upstream=http://localhost:8888
+          - --upstream-ca=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+          - --email-domain=*
+          - --skip-provider-button
+          - --openshift-sar={"verb":"get","resource":"notebooks","resourceAPIGroup":"kubeflow.org","resourceName":"my-custom-workbench","namespace":"$(NAMESPACE)"}
+          - --logout-url=https://rhods-dashboard-redhat-ods-applications.apps.cluster-lz7m7.lz7m7.sandbox1105.opentlc.com/projects/parasol-insurance?notebookLogout=my-custom-workbench
+          env:
+          - name: NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          image: registry.redhat.io/openshift4/ose-oauth-proxy@sha256:4bef31eb993feb6f1096b51b4876c65a6fb1f4401fee97fa4f4542b6b7c9bc46
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /oauth/healthz
+              port: oauth-proxy
+              scheme: HTTPS
+            initialDelaySeconds: 30
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: oauth-proxy
+          ports:
+          - containerPort: 8443
+            name: oauth-proxy
+            protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /oauth/healthz
+              port: oauth-proxy
+              scheme: HTTPS
+            initialDelaySeconds: 5
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources:
+            limits:
+              cpu: 100m
+              memory: 64Mi
+            requests:
+              cpu: 100m
+              memory: 64Mi
+          volumeMounts:
+          - mountPath: /etc/oauth/config
+            name: oauth-config
+          - mountPath: /etc/tls/private
+            name: tls-certificates
+        enableServiceLinks: false
+        serviceAccountName: my-custom-workbench
+        volumes:
+        - name: my-custom-workbench
+          persistentVolumeClaim:
+            claimName: my-custom-workbench
+        - emptyDir:
+            medium: Memory
+          name: shm
+        - name: oauth-config
+          secret:
+            defaultMode: 420
+            secretName: my-custom-workbench-oauth-config
+        - name: tls-certificates
+          secret:
+            defaultMode: 420
+            secretName: my-custom-workbench-tls
+  status:
+    conditions:
+    - lastProbeTime: "2024-11-01T18:24:46Z"
+      lastTransitionTime: "2024-11-01T18:23:58Z"
+      status: "True"
+      type: PodReadyToStartContainers
+    - lastProbeTime: "2024-11-01T18:24:46Z"
+      lastTransitionTime: "2024-11-01T18:23:46Z"
+      status: "True"
+      type: Initialized
+    - lastProbeTime: "2024-11-01T18:24:46Z"
+      lastTransitionTime: "2024-11-01T18:24:06Z"
+      status: "True"
+      type: Ready
+    - lastProbeTime: "2024-11-01T18:24:46Z"
+      lastTransitionTime: "2024-11-01T18:24:06Z"
+      status: "True"
+      type: ContainersReady
+    - lastProbeTime: "2024-11-01T18:24:46Z"
+      lastTransitionTime: "2024-11-01T18:23:46Z"
+      status: "True"
+      type: PodScheduled
+    containerState:
+      running:
+        startedAt: "2024-11-01T18:23:56Z"
+    readyReplicas: 1
+kind: List
+metadata:
+  resourceVersion: ""
