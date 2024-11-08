@@ -3,7 +3,7 @@ kind: Notebook
 metadata:
   annotations:
     notebooks.opendatahub.io/inject-oauth: 'true'
-    opendatahub.io/image-display-name: Minimal Python
+    opendatahub.io/image-display-name: Standard Data Science
     notebooks.opendatahub.io/oauth-logout-url: ''
     opendatahub.io/accelerator-name: ''
     openshift.io/description: ''
@@ -17,7 +17,7 @@ spec:
       affinity: {}
       containers:
         - name: standard-workbench
-          image: 's2i-generic-data-science-notebook:2024.1'
+          image: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-generic-data-science-notebook:2024.1'
           resources:
             limits:
               cpu: '2'
@@ -55,15 +55,15 @@ spec:
                 --ServerApp.quit_button=False
                 --ServerApp.tornado_settings={"user":"user1","hub_host":"","hub_prefix":"/projects/parasol-insurance"}
             - name: JUPYTER_IMAGE
-              value: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/standard-notebook:latest'
+              value: 'image-registry.openshift-image-registry.svc:5000/redhat-ods-applications/s2i-generic-data-science-notebook:2024.1'
             - name: PIP_CERT
-              value: /etc/pki/tls/standard-certs/ca-bundle.crt
+              value: /etc/pki/tls/custom-certs/ca-bundle.crt
             - name: REQUESTS_CA_BUNDLE
-              value: /etc/pki/tls/standard-certs/ca-bundle.crt
+              value: /etc/pki/tls/custom-certs/ca-bundle.crt
             - name: SSL_CERT_FILE
-              value: /etc/pki/tls/standard-certs/ca-bundle.crt
+              value: /etc/pki/tls/custom-certs/ca-bundle.crt
             - name: PIPELINES_SSL_SA_CERTS
-              value: /etc/pki/tls/standard-certs/ca-bundle.crt
+              value: /etc/pki/tls/custom-certs/ca-bundle.crt
           ports:
             - containerPort: 8888
               name: notebook-port
@@ -74,10 +74,10 @@ spec:
               name: standard-workbench
             - mountPath: /dev/shm
               name: shm
-            # - mountPath: /etc/pki/tls/standard-certs/ca-bundle.crt
-            #   name: trusted-ca
-            #   readOnly: true
-            #   subPath: ca-bundle.crt
+            - mountPath: /etc/pki/tls/custom-certs/ca-bundle.crt
+              name: trusted-ca
+              readOnly: true
+              subPath: ca-bundle.crt
           workingDir: /opt/app-root/src
           envFrom:
             - secretRef:
@@ -91,10 +91,10 @@ spec:
         - emptyDir:
             medium: Memory
           name: shm
-        # - configMap:
-        #     items:
-        #       - key: ca-bundle.crt
-        #         path: ca-bundle.crt
-        #     name: workbench-trusted-ca-bundle
-        #     optional: true
-        #   name: trusted-ca
+        - configMap:
+            items:
+              - key: ca-bundle.crt
+                path: ca-bundle.crt
+            name: workbench-trusted-ca-bundle
+            optional: true
+          name: trusted-ca
